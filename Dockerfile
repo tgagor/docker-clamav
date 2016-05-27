@@ -1,10 +1,12 @@
 FROM debian:jessie
 MAINTAINER tgagor, https://github.com/tgagor
 
-RUN apt-get update
-
 # Install ClamAV
-RUN apt-get install -y clamav clamav-freshclam
+RUN apt-get update \
+  && apt-get install -y clamav clamav-freshclam unzip unrar \
+  && apt-get autoremove -y \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 # Update ClamAV Definitions
 RUN freshclam
