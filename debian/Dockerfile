@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM debian:11-slim
 MAINTAINER tgagor, https://github.com/tgagor
 
 ENV DEBIAN_FRONTEND noninteractive
