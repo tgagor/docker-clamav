@@ -6,7 +6,8 @@ ENV TERM xterm
 
 # Install ClamAV
 RUN apt-get update && \
-    apt-get install -y clamav clamav-freshclam && \
+    apt-get install -y \
+        clamav clamav-freshclam unrar && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
