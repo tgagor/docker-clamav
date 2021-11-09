@@ -22,19 +22,19 @@ jobs:
         run: |
           echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
 
-          docker build --tag ghcr.io/tgagor/optipng:alpine --cache-from ghcr.io/tgagor/optipng:alpine alpine
-          docker build --tag ghcr.io/tgagor/optipng:debian --cache-from ghcr.io/tgagor/optipng:debian debian
+          docker build --tag ghcr.io/tgagor/clamav:alpine --cache-from ghcr.io/tgagor/clamav:alpine alpine
+          docker build --tag ghcr.io/tgagor/clamav:debian --cache-from ghcr.io/tgagor/clamav:debian debian
 
-          docker run -i --rm ghcr.io/tgagor/optipng:alpine --version
-          docker run -i --rm ghcr.io/tgagor/optipng:debian --version
+          docker run -i --rm ghcr.io/tgagor/clamav:alpine --version
+          docker run -i --rm ghcr.io/tgagor/clamav:debian --version
 
-          docker tag ghcr.io/tgagor/optipng:alpine ghcr.io/tgagor/optipng:${GITHUB_REF##*/}
-          docker tag ghcr.io/tgagor/optipng:alpine ghcr.io/tgagor/optipng:alpine-${{ github.sha }}
+          docker tag ghcr.io/tgagor/clamav:alpine ghcr.io/tgagor/clamav:${GITHUB_REF##*/}
+          docker tag ghcr.io/tgagor/clamav:alpine ghcr.io/tgagor/clamav:alpine-${{ github.sha }}
 
-          docker push ghcr.io/tgagor/optipng:alpine
-          docker push ghcr.io/tgagor/optipng:alpine-${{ github.sha }}
-          docker push ghcr.io/tgagor/optipng:debian
-          docker push ghcr.io/tgagor/optipng:${GITHUB_REF##*/}
+          docker push ghcr.io/tgagor/clamav:alpine
+          docker push ghcr.io/tgagor/clamav:alpine-${{ github.sha }}
+          docker push ghcr.io/tgagor/clamav:debian
+          docker push ghcr.io/tgagor/clamav:${GITHUB_REF##*/}
 
   security-scan:
     runs-on: ubuntu-20.04
@@ -45,12 +45,12 @@ jobs:
       - name: Fetch image
         run: |
           echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
-          docker pull ghcr.io/tgagor/optipng:alpine-${{ github.sha }}
+          docker pull ghcr.io/tgagor/clamav:alpine-${{ github.sha }}
 
       - name: Run Trivy vulnerability scanner on Alpine image
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ghcr.io/tgagor/optipng:alpine-${{ github.sha }}
+          image-ref: ghcr.io/tgagor/clamav:alpine-${{ github.sha }}
           format: template
           template: '@/contrib/sarif.tpl'
           exit-code: 0
